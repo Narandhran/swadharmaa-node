@@ -45,8 +45,8 @@ module.exports = {
             isUser.verify.otp = otp;
             isUser.verify.expire = new Date();
             await isUser.save();
-            console.log(smsGateWay.uri(mobile, `Hi ${isUser.fullname}, your OTP is ${otp} will expire in another 10 mins. Kindly use this for login, don't share it with anyone. Have a great day, Team SWADHARMAA.`));
-            await axios.get(smsGateWay.uri(mobile, `Hi ${isUser.fullname}, your OTP is ${otp} will expire in another 10 mins. Kindly use this for login, don't share it with anyone. Have a great day, Team SWADHARMAA.`)).then(r => {
+            // console.log(smsGateWay.uri(mobile, `Hi ${isUser.fullname}, your OTP is ${otp} will expire in another 15 mins. Kindly use this for login, don't share it with anyone. Have a great day, Team SWADHARMAA.`));
+            await axios.get(smsGateWay.uri(mobile, `Hi ${isUser.fullname}, your OTP is ${otp} will expire in another 15 mins. Kindly use this for login, don't share it with anyone. Have a great day, Team SWADHARMAA.`)).then(r => {
                 cb(null, 'OTP sent successfully');
             }).catch(e => { cb(e, {}); });
         } else cb(new Error('User doesn\'t exist, please register!'), {});

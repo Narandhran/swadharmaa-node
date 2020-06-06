@@ -7,7 +7,7 @@ module.exports = app => {
      */
     app.post('/category/create', AdminOnly, categoryCtl.create);
     app.put('/category/update/:id', AdminOnly, categoryCtl.updateById);
-    app.put('category/update_thumb/:id', AdminOnly, categoryCtl.updateThumbnail);
+    app.put('/category/update_thumb/:id', AdminOnly, categoryCtl.updateThumbnail);
     /**
      * All users
      */

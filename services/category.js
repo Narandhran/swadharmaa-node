@@ -1,11 +1,12 @@
 const { Category } = require('../models/category');
+const { loadMulter } = require('./custom/multipart.service');
 
 module.exports = {
     create: async (request, cb) => {
-        let upload = loadMulter(5, ['jpg,jpeg,png']).single('category');
+        let upload = loadMulter(5, ['.jpg','.png','.jpeg']).single('category');
         await upload(request, null, (err) => {
             if (err)
-                cb(err,{});
+                cb(err, {});
             else {
                 let persisted = JSON.parse(request.body.textField);
                 persisted.thumbnail = request.file.filename;
@@ -28,11 +29,11 @@ module.exports = {
                 cb(err, result);
             });
     },
-    updateThumbnail: async(request,cb)=>{
+    updateThumbnail: async (request, cb) => {
         let upload = loadMulter(5, ['.jpg', '.png', '.jpeg']).single('category');
         await upload(request, null, (err) => {
             if (err)
-                cb(err,{});
+                cb(err, {});
             else {
                 Category
                     .findByIdAndUpdate(request.params.id, {

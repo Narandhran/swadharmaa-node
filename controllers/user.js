@@ -1,4 +1,5 @@
-const { register, login, requestOtp } = require('../services/user');
+const { register, login, requestOtp, updateDp, getProfileInfo, updateProfile
+} = require('../services/user');
 const { successHandler, errorHandler } = require('../utils/handler');
 
 module.exports = {
@@ -18,6 +19,24 @@ module.exports = {
         requestOtp(req, (err, result) => {
             if (err) errorHandler(req, res, err);
             else successHandler(req, res, 'Otp sent successfully', result);
+        });
+    },
+    updateDp: (req, res) => {
+        updateDp(req, (err, result) => {
+            if (err) errorHandler(req, res, err);
+            else successHandler(req, res, 'Display picture updated', result);
+        });
+    },
+    getProfileInfo: (req, res) => {
+        getProfileInfo(req, (err, result) => {
+            if (err) errorHandler(req, res, err);
+            else successHandler(req, res, 'Success', result);
+        });
+    },
+    updateProfile: (req,res)=>{
+        updateProfile(req,(err,result)=>{
+            if (err) errorHandler(req, res, err);
+            else successHandler(req, res, 'Updated', result);
         });
     }
 };

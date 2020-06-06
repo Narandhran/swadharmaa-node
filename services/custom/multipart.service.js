@@ -24,17 +24,25 @@ const fileStorage = multer.diskStorage({
     }
 });
 
-var loadMulter = multer({
-    storage: fileStorage,
-    fileFilter: function (req, file, cb) {
-        if (file.size > (5 * 1024 * 1024)) {
-            var e = new Error('File size is should not exceet 5Mb');
-            e.name = 'FileValidationError';
-            return cb(e, false);
-        }
-        cb(null, true);
-    },
-    limits: { fileSize: (5 * 1024 * 1024) }
-});
+var loadMulter = (fileSize, fileExt) => {
+    return multer({
+        storage: fileStorage,
+        fileFilter: function (req, file, cb) {
+            if (file.size > (fileSize * 1024 * 1024)) {
+                var e = new Error(`File size is should not exceet ${fileSize}Mb`);
+                e.name = 'FileValidationError';
+                return cb(e, false);
+            }
+            var ext = path.extname(file.originalname);
+            if (!fileExt.some(v => {
+                return v == ext;
+            })) {
+                return cb(new Error('Unsupported file type'));
+            }
+            cb(null, true);
+        },
+        limits: { fileSize: (fileSize * 1024 * 1024) }
+    });
+};
 
 module.exports = { loadMulter };

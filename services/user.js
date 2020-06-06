@@ -1,8 +1,11 @@
 const { User } = require('../models/user');
+const { loadMulter } = require('../services/custom/multipart.service');
+const config = require('../config')[process.env.NODE_ENV];
 const { onlyNumber, autoIdGen } = require('../utils/autogen');
 const { smsGateWay } = require('../utils/constant');
 const { sign } = require('./custom/jwt.service');
 const moment = require('moment');
+
 const axios = require('axios').default;
 
 module.exports = {
@@ -17,8 +20,6 @@ module.exports = {
     login: async (request, cb) => {
         let { mobile, otp } = request.body;
         let isUser = await User.findOne({ 'mobile': mobile });
-        // console.log(isUser.verify.expire);
-        // console.log(moment(isUser.verify.expire).add(15, 'm').toDate());
         if (isUser) {
             if (isUser.verify.expire < moment(isUser.verify.expire).add(15, 'm').toDate()) {
                 if (isUser.verify.otp == otp) {
@@ -30,7 +31,7 @@ module.exports = {
                             role: isUser.role,
                             fullname: isUser.fullname
                         });
-                        cb(null, token);
+                        cb(null, { token, rpath: config.GET_RESOURCE_BASE_PATH });
                     } catch (e) { cb(e, {}); };
                 } else cb(new Error('OTP invalid, try again!'), {});
             } else cb(new Error('OTP expired'));
@@ -44,9 +45,40 @@ module.exports = {
             isUser.verify.otp = otp;
             isUser.verify.expire = new Date();
             await isUser.save();
-            axios.get(smsGateWay.uri(mobile, `Hi ${isUser.fullname}, your OTP is ${otp} will expire in another 10 mins. Kindly use this for login, don't share it with anyone. Have a great day, Team SWADHARMAA.`)).then(r => {
+            console.log(smsGateWay.uri(mobile, `Hi ${isUser.fullname}, your OTP is ${otp} will expire in another 10 mins. Kindly use this for login, don't share it with anyone. Have a great day, Team SWADHARMAA.`));
+            await axios.get(smsGateWay.uri(mobile, `Hi ${isUser.fullname}, your OTP is ${otp} will expire in another 10 mins. Kindly use this for login, don't share it with anyone. Have a great day, Team SWADHARMAA.`)).then(r => {
                 cb(null, 'OTP sent successfully');
             }).catch(e => { cb(e, {}); });
         } else cb(new Error('User doesn\'t exist, please register!'), {});
+    },
+    updateDp: async (request, cb) => {
+        let upload = loadMulter(5, ['.jpg', '.png', '.jpeg']).single('dp');
+        await upload(request, null, (err) => {
+            if (err)
+                cb(err);
+            else {
+                User
+                    .findByIdAndUpdate(request.verifiedToken._id, {
+                        dp: request.file.filename
+                    }, { new: true })
+                    .exec((err, result) => {
+                        cb(err, result);
+                    });
+            }
+        });
+    },
+    getProfileInfo: async (request, cb) => {
+        await User
+            .findById(request.verifiedToken._id, 'fname lname dp email gender mobile')
+            .exec((err, result) => {
+                cb(err, result);
+            });
+    },
+    updateProfile: async (request, cb) => {
+        await User
+            .findByIdAndUpdate(request.verifiedToken._id, request.body, { new: true })
+            .exec((err, result) => {
+                cb(err, result);
+            });
     }
 };

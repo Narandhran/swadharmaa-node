@@ -1,5 +1,4 @@
 const { model, Schema } = require('mongoose');
-const config = require('../config')[process.env.NODE_ENV];
 var userSchema = new Schema({
     dp: {
         type: String,

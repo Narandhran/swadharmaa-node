@@ -76,7 +76,8 @@ module.exports = {
     },
     updateProfile: async (request, cb) => {
         await User
-            .findByIdAndUpdate(request.verifiedToken._id, request.body, { new: true })
+            .findOneAndUpdate({ _id: request.verifiedToken._id },
+                request.body, { new: true })
             .exec((err, result) => {
                 cb(err, result);
             });

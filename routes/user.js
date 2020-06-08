@@ -14,5 +14,5 @@ module.exports = app => {
      */
     app.put('/user/update_dp', AllUsers, userCtl.updateDp);
     app.get('/user/my_profile', AllUsers, userCtl.getProfileInfo);
-    app.put('user/update_profile', AllUsers, userCtl.updateProfile);
+    app.put('/user/update_profile', AllUsers, userCtl.updateProfile);
 };

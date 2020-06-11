@@ -8,11 +8,14 @@ const fileStorage = multer.diskStorage({
             case 'dp':
                 cb(null, `${config.POST_RESOURCE_BASE_PATH}dp`);
                 break;
-            case 'products':
-                cb(null, `${config.POST_RESOURCE_BASE_PATH}product`);
+            case 'content':
+                cb(null, `${config.POST_RESOURCE_BASE_PATH}content`);
                 break;
             case 'category':
                 cb(null, `${config.POST_RESOURCE_BASE_PATH}category`);
+                break;
+            case 'pdf-thumb':
+                cb(null, `${config.POST_RESOURCE_BASE_PATH}content/pdf-thumb`);
                 break;
             default:
                 cb(null, `${config.POST_RESOURCE_BASE_PATH}`);
@@ -24,22 +27,23 @@ const fileStorage = multer.diskStorage({
     }
 });
 
-var loadMulter = (fileSize, fileExt) => {
+var loadMulter = (fileSize) => {
     return multer({
         storage: fileStorage,
         fileFilter: function (req, file, cb) {
-            if (file.size > (fileSize * 1024 * 1024)) {
-                var e = new Error(`File size is should not exceet ${fileSize}Mb`);
-                e.name = 'FileValidationError';
-                return cb(e, false);
+            if (file.fieldname == 'content') {
+                if (file.mimetype === 'application/pdf') {
+                    cb(null, true);
+                } else cb('Unsupported file type', false);
+            } else if (file.fieldname == 'category' || file.fieldname == 'dp' || file.fieldname == 'pdf-thumb') {
+                if (file.mimetype === 'image/png' ||
+                    file.mimetype === 'image/jpg' ||
+                    file.mimetype === 'image/jpeg') {
+                    cb(null, true);
+                } else cb('Unsupported file type', false);
             }
-            var ext = path.extname(file.originalname);
-            if (!fileExt.some(v => {
-                return v == ext;
-            })) {
-                return cb(new Error('Unsupported file type'));
-            }
-            cb(null, true);
+            else cb(new Error('Unsupported file type', false));
+
         },
         limits: { fileSize: (fileSize * 1024 * 1024) }
     });

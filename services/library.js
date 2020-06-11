@@ -1,15 +1,17 @@
 const { Library } = require('../models/library');
+const { loadMulter } = require('../services/custom/multipart.service');
 
 module.exports = {
     create: async (request, cb) => {
-        let upload = loadMulter(5, ['.jpg', '.png', '.jpeg']).single('library');
-        await upload(request, null, (err) => {
+        let upload = loadMulter(20).any();
+        await upload(request, null, async (err) => {
             if (err)
                 cb(err, {});
             else {
                 let persisted = JSON.parse(request.body.textField);
-                persisted.thumbnail = request.file.filename;
-                Library.create(persisted, (err, result) => {
+                persisted.thumbnail = request.files[0].filename;
+                persisted.content = request.files[1].filename;
+                await Library.create(persisted, (err, result) => {
                     cb(err, result);
                 });
             }
@@ -22,7 +24,7 @@ module.exports = {
                 cb(err, result);
             });
     },
-    updateById:  async (request, cb) => {
+    updateById: async (request, cb) => {
         await Library
             .findByIdAndUpdate(request.params.id, request.body, { new: true })
             .exec((err, result) => {
@@ -30,7 +32,7 @@ module.exports = {
             });
     },
     updateThumbnail: async (request, cb) => {
-        let upload = loadMulter(5, ['.jpg', '.png', '.jpeg']).single('library');
+        let upload = loadMulter(5).single('pdf-thumb');
         await upload(request, null, (err) => {
             if (err)
                 cb(err, {});
@@ -44,5 +46,21 @@ module.exports = {
                     });
             }
         });
+    },
+    getRecent: async (request, cb) => {
+        Library.find({})
+            .sort({ createdAt: -1 })
+            .limit(10)
+            .exec((err, result) => {
+                cb(err, result);
+            });
+    },
+    listByCategory: async (request, cb) => {
+        Library
+            .find({ 'categoryId': request.params.id })
+            .sort({ 'updatedAt': -1 })
+            .exec((err, result) => {
+                cb(err, result);
+            });
     }
 };

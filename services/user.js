@@ -52,7 +52,7 @@ module.exports = {
         } else cb(new Error('User doesn\'t exist, please register!'), {});
     },
     updateDp: async (request, cb) => {
-        let upload = loadMulter(5, ['.jpg', '.png', '.jpeg']).single('dp');
+        let upload = loadMulter(5).single('dp');
         await upload(request, null, (err) => {
             if (err)
                 cb(err);

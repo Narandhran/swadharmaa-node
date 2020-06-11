@@ -3,6 +3,7 @@ const { model, Schema } = require('mongoose');
 var librarySchema = new Schema({
     categoryId: {
         type: Schema.Types.ObjectId,
+        ref: 'category',
         required: true
     },
     name: {
@@ -10,12 +11,16 @@ var librarySchema = new Schema({
         required: true,
         maxlength: 36
     },
+    content: {
+        type: String,
+        required: true
+    },
     thumbnail: {
         type: String,
         required: true
     },
     genre: {
-        type: String,
+        type: [String],
         required: true
     },
     author: {
@@ -30,6 +35,10 @@ var librarySchema = new Schema({
         type: String,
         required: false,
         maxlength: 100
+    },
+    keywords: {
+        type: [String],
+        required: false
     }
 }, { timestamps: true });
 

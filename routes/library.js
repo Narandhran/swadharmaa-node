@@ -15,5 +15,6 @@ module.exports = app => {
      */
     app.get('/library/get_one/:id', libraryCtl.getById);
     app.get('/library/list_recent', libraryCtl.getRecent);
-    app.get('/library/list_category/:id',libraryCtl.listByCategory);
+    app.get('/library/list_category/:id', libraryCtl.listByCategory);
+    app.get('/library/homepage', libraryCtl.genreBasedList);
 };

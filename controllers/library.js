@@ -1,4 +1,4 @@
-const { create, getRecent, updateById, updateThumbnail, getById, listByCategory }
+const { create, getRecent, updateById, updateThumbnail, getById, listByCategory, genreBasedList }
     = require('../services/library');
 const { successHandler, errorHandler } = require('../utils/handler');
 
@@ -33,8 +33,14 @@ module.exports = {
             else successHandler(req, res, 'Success', result);
         });
     },
-    listByCategory: (req,res)=>{
-        listByCategory(req,(err,result)=>{
+    listByCategory: (req, res) => {
+        listByCategory(req, (err, result) => {
+            if (err) errorHandler(req, res, err);
+            else successHandler(req, res, 'Success', result);
+        });
+    },
+    genreBasedList: (req, res) => {
+        genreBasedList(req, (err, result) => {
             if (err) errorHandler(req, res, err);
             else successHandler(req, res, 'Success', result);
         });

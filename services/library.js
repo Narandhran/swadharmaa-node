@@ -62,5 +62,38 @@ module.exports = {
             .exec((err, result) => {
                 cb(err, result);
             });
+    },
+    genreBasedList: async (request, cb) => {
+        Library
+            .aggregate([
+                {
+                    '$unwind': { 'path': '$genre' }
+                }, {
+                    '$sort': { 'genre': 1, 'name': 1 }
+                }, {
+                    '$group': {
+                        '_id': '$genre',
+                        'items': {
+                            '$push': {
+                                'name': '$name',
+                                'genre': '$genre',
+                                'author': '$author',
+                                'yearOfPublish': '$yearOfPublish',
+                                'description': '$description',
+                                'thumbnail': '$thumbnail',
+                                'content': '$content'
+                            }
+                        }
+                    }
+                }, {
+                    '$project': {
+                        '_id': 0,
+                        'genre': '$_id',
+                        'books': { '$slice': ['$items', 10] }
+                    }
+                }
+            ]).exec((err, result) => {
+                cb(err, result);
+            });
     }
 };

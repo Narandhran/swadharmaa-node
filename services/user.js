@@ -31,7 +31,7 @@ module.exports = {
                             role: isUser.role,
                             fullname: isUser.fullname
                         });
-                        cb(null, { token, rpath: config.GET_RESOURCE_BASE_PATH });
+                        cb(null, { role: isUser.role, token, rpath: config.GET_RESOURCE_BASE_PATH });
                     } catch (e) { cb(e, {}); };
                 } else cb(new Error('OTP invalid, try again!'), {});
             } else cb(new Error('OTP expired'));

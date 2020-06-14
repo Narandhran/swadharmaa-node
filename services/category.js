@@ -3,7 +3,7 @@ const { loadMulter } = require('./custom/multipart.service');
 
 module.exports = {
     create: async (request, cb) => {
-        let upload = loadMulter(5, ['.jpg','.png','.jpeg']).single('category');
+        let upload = loadMulter(5).single('category');
         await upload(request, null, (err) => {
             if (err)
                 cb(err, {});

@@ -36,11 +36,10 @@ var loadMulter = (fileSize) => {
                     cb(null, true);
                 } else cb('Unsupported file type', false);
             } else if (file.fieldname == 'category' || file.fieldname == 'dp' || file.fieldname == 'pdf-thumb') {
-                if (file.mimetype === 'image/png' ||
-                    file.mimetype === 'image/jpg' ||
-                    file.mimetype === 'image/jpeg') {
+                let fext = path.extname(file.originalname);
+                if (fext == '.jpg' || fext == '.jpeg' || fext == '.png') {
                     cb(null, true);
-                } else cb('Unsupported file type', false);
+                } else cb(new Error('Unsupported file type'), false);
             }
             else cb(new Error('Unsupported file type', false));
 

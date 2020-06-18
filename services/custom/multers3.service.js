@@ -1,3 +1,4 @@
+const { secretAccessKey, accessKeyId, region } = require('../../utils/constant').aws;
 var aws = require('aws-sdk');
 var multer = require('multer');
 var multerS3 = require('multer-s3');
@@ -5,9 +6,9 @@ var path = require('path');
 
 
 aws.config.update({
-    secretAccessKey: 'B6WkfMYrwd/LsmfVONgCv2RC9iZ9QoOkB6Bi5aMM',
-    accessKeyId: 'AKIAJGAWQOQDGV5W76TQ',
-    region: 'ap-south-1'
+    secretAccessKey: secretAccessKey,
+    accessKeyId: accessKeyId,
+    region: region
 });
 
 var s3 = new aws.S3();

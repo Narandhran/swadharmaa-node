@@ -2,7 +2,7 @@ const { User } = require('../models/user');
 const { loadMulter } = require('../services/custom/multipart.service');
 const config = require('../config')[process.env.NODE_ENV];
 const { onlyNumber, autoIdGen } = require('../utils/autogen');
-const { smsGateWay } = require('../utils/constant');
+const { s3, smsGateWay } = require('../utils/constant');
 const { sign } = require('./custom/jwt.service');
 const moment = require('moment');
 
@@ -31,7 +31,7 @@ module.exports = {
                             role: isUser.role,
                             fullname: isUser.fullname
                         });
-                        cb(null, { role: isUser.role, token, rpath: config.S3_BASE_PATH });
+                        cb(null, { role: isUser.role, token, rpath: s3.basePath });
                     } catch (e) { cb(e, {}); };
                 } else cb(new Error('OTP invalid, try again!'), {});
             } else cb(new Error('OTP expired'));

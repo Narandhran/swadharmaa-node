@@ -1,4 +1,4 @@
-const { list, create, updateById, updateThumbnail } = require('../services/category');
+const { list, create, updateById, updateThumbnail,updateThumb } = require('../services/category');
 const { successHandler, errorHandler } = require('../utils/handler');
 
 module.exports = {
@@ -25,5 +25,11 @@ module.exports = {
             if (err) errorHandler(req, res, err);
             else successHandler(req, res, 'Updated successfully', result);
         });
-    }
+    },
+    updateThumb: (req,res)=>{
+        updateThumb(req, (err, result) => {
+            if (err) errorHandler(req, res, err);
+            else successHandler(req, res, 'Updated successfully', result);
+        });
+    },
 };

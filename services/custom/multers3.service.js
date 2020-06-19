@@ -18,6 +18,8 @@ var loadMulter = (fileSize, filePath) => {
         storage: multerS3({
             s3: s3,
             bucket: `swadharmaa/${filePath}`,
+            contentType: multerS3.AUTO_CONTENT_TYPE,
+            acl: 'public-read',
             key: function (req, file, cb) {
                 cb(null, `${Date.now()}${path.extname(file.originalname)}`);
             }

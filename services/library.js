@@ -3,14 +3,14 @@ const { loadMulter } = require('../services/custom/multers3.service');
 
 module.exports = {
     create: async (request, cb) => {
-        let upload = loadMulter(20,'/book').any();
+        let upload = loadMulter(20,'book').any();
         await upload(request, null, async (err) => {
             if (err)
                 cb(err, {});
             else {
                 let persisted = JSON.parse(request.body.textField);
-                persisted.thumbnail = request.files[0].filename;
-                persisted.content = request.files[1].filename;
+                persisted.thumbnail = request.files[0].key;
+                persisted.content = request.files[1].key;
                 await Library.create(persisted, (err, result) => {
                     cb(err, result);
                 });
@@ -32,14 +32,14 @@ module.exports = {
             });
     },
     updateThumbnail: async (request, cb) => {
-        let upload = loadMulter(5,'/pdf-thumb').single('pdf-thumb');
+        let upload = loadMulter(5,'pdf-thumb').single('pdf-thumb');
         await upload(request, null, (err) => {
             if (err)
                 cb(err, {});
             else {
                 Library
                     .findByIdAndUpdate(request.params.id, {
-                        thumbnail: request.file.filename
+                        thumbnail: request.file.key
                     }, { new: true })
                     .exec((err, result) => {
                         cb(err, result);

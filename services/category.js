@@ -3,13 +3,13 @@ const { loadMulter } = require('./custom/multers3.service');
 const { upload } = require('./custom/multers3.service');
 module.exports = {
     create: async (request, cb) => {
-        let upload = loadMulter(5, '/category-thumb').single('category');
+        let upload = loadMulter(5, 'category-thumb').single('category');
         await upload(request, null, (err) => {
             if (err)
                 cb(err, {});
             else {
                 let persisted = JSON.parse(request.body.textField);
-                persisted.thumbnail = request.file.filename;
+                persisted.thumbnail = request.file.key;
                 Category.create(persisted, (err, result) => {
                     cb(err, result);
                 });
@@ -30,14 +30,14 @@ module.exports = {
             });
     },
     updateThumbnail: async (request, cb) => {
-        let upload = loadMulter(5, '/category-thumb').single('category');
+        let upload = loadMulter(5, 'category-thumb').single('category');
         await upload(request, null, (err) => {
             if (err)
                 cb(err, {});
             else {
                 Category
                     .findByIdAndUpdate(request.params.id, {
-                        thumbnail: request.file.filename
+                        thumbnail: request.file.key
                     }, { new: true })
                     .exec((err, result) => {
                         cb(err, result);

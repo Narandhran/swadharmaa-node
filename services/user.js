@@ -52,14 +52,15 @@ module.exports = {
         } else cb(new Error('User doesn\'t exist, please register!'), {});
     },
     updateDp: async (request, cb) => {
-        let upload = loadMulter(5,'/dp').single('dp');
+        let upload = loadMulter(5,'dp').single('dp');
         await upload(request, null, (err) => {
             if (err)
                 cb(err);
             else {
+                console.log(request.file);
                 User
                     .findByIdAndUpdate(request.verifiedToken._id, {
-                        dp: request.file.filename
+                        dp: request.file.key
                     }, { new: true })
                     .exec((err, result) => {
                         cb(err, result);

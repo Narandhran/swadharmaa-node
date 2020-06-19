@@ -1,9 +1,9 @@
 const { Category } = require('../models/category');
-const { loadMulter } = require('./custom/multipart.service');
+const { loadMulter } = require('./custom/multers3.service');
 const { upload } = require('./custom/multers3.service');
 module.exports = {
     create: async (request, cb) => {
-        let upload = loadMulter(5).single('category');
+        let upload = loadMulter(5, '/category-thumb').single('category');
         await upload(request, null, (err) => {
             if (err)
                 cb(err, {});
@@ -30,7 +30,7 @@ module.exports = {
             });
     },
     updateThumbnail: async (request, cb) => {
-        let upload = loadMulter(5).single('category');
+        let upload = loadMulter(5, '/category-thumb').single('category');
         await upload(request, null, (err) => {
             if (err)
                 cb(err, {});
@@ -42,17 +42,6 @@ module.exports = {
                     .exec((err, result) => {
                         cb(err, result);
                     });
-            }
-        });
-    },
-    updateThumb: async (request, cb) => {
-        let load = upload.single('cat');
-        load(request, null, (err) => {
-            if (err) {
-                cb(err);
-            }
-            else {
-                console.log(request.file.filename);
             }
         });
     }

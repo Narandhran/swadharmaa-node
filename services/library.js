@@ -1,9 +1,9 @@
 const { Library } = require('../models/library');
-const { loadMulter } = require('../services/custom/multipart.service');
+const { loadMulter } = require('../services/custom/multers3.service');
 
 module.exports = {
     create: async (request, cb) => {
-        let upload = loadMulter(20).any();
+        let upload = loadMulter(20,'/book').any();
         await upload(request, null, async (err) => {
             if (err)
                 cb(err, {});
@@ -32,7 +32,7 @@ module.exports = {
             });
     },
     updateThumbnail: async (request, cb) => {
-        let upload = loadMulter(5).single('pdf-thumb');
+        let upload = loadMulter(5,'/pdf-thumb').single('pdf-thumb');
         await upload(request, null, (err) => {
             if (err)
                 cb(err, {});

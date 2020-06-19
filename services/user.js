@@ -1,5 +1,5 @@
 const { User } = require('../models/user');
-const { loadMulter } = require('../services/custom/multipart.service');
+const { loadMulter } = require('../services/custom/multers3.service');
 const config = require('../config')[process.env.NODE_ENV];
 const { onlyNumber, autoIdGen } = require('../utils/autogen');
 const { s3, smsGateWay } = require('../utils/constant');
@@ -52,7 +52,7 @@ module.exports = {
         } else cb(new Error('User doesn\'t exist, please register!'), {});
     },
     updateDp: async (request, cb) => {
-        let upload = loadMulter(5).single('dp');
+        let upload = loadMulter(5,'/dp').single('dp');
         await upload(request, null, (err) => {
             if (err)
                 cb(err);

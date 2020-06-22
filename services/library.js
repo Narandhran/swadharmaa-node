@@ -3,7 +3,7 @@ const { loadMulter } = require('../services/custom/multers3.service');
 
 module.exports = {
     create: async (request, cb) => {
-        let upload = loadMulter(20,'book').any();
+        let upload = loadMulter(20, 'book').any();
         await upload(request, null, async (err) => {
             if (err)
                 cb(err, {});
@@ -32,7 +32,7 @@ module.exports = {
             });
     },
     updateThumbnail: async (request, cb) => {
-        let upload = loadMulter(5,'book').single('pdf-thumb');
+        let upload = loadMulter(5, 'book').single('pdf-thumb');
         await upload(request, null, (err) => {
             if (err)
                 cb(err, {});
@@ -95,5 +95,75 @@ module.exports = {
             ]).exec((err, result) => {
                 cb(err, result);
             });
+    },
+    searchFilter: async (request, cb) => {
+        Library.aggregate([{
+            '$unwind': {
+                'path': '$keywords'
+            }
+        }, {
+            '$project': {
+                'categoryId': '$categoryId',
+                'name': {
+                    '$toLower': '$name'
+                },
+                'author': '$author',
+                'yearOfPublish': '$yearOfPublish',
+                'description': '$description',
+                'thumbnail': '$thumbnail',
+                'content': '$content',
+                'keywords': '$keywords'
+            }
+        }, {
+            '$match': {
+                '$or': [
+                    {
+                        'name': new RegExp(request.params.search + '.*')
+                    }, {
+                        'keywords': new RegExp(request.params.search + '.*')
+                    }
+                ]
+            }
+        }, {
+            '$group': {
+                '_id': '$categoryId',
+                'data': {
+                    '$push': {
+                        'categoryId': '$categoryId',
+                        'name': '$name',
+                        'author': '$author',
+                        'yearOfPublish': '$yearOfPublish',
+                        'description': '$description',
+                        'thumbnail': '$thumbnail',
+                        'content': '$content'
+                    }
+                }
+            }
+        }, {
+            '$replaceRoot': {
+                'newRoot': {
+                    '$mergeObjects': [
+                        {
+                            '$arrayElemAt': [
+                                '$data', 0
+                            ]
+                        }, '$$ROOT'
+                    ]
+                }
+            }
+        }, {
+            '$project': {
+                '_id': 0,
+                'categoryId': '$categoryId',
+                'name': '$name',
+                'author': '$author',
+                'yearOfPublish': '$yearOfPublish',
+                'description': '$description',
+                'thumbnail': '$thumbnail',
+                'content': '$content'
+            }
+        }]).exec((err, result) => {
+            cb(err, result);
+        });
     }
 };

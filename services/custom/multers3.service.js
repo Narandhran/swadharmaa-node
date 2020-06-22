@@ -29,7 +29,7 @@ var loadMulter = (fileSize, filePath) => {
                 if (file.mimetype === 'application/pdf') {
                     cb(null, true);
                 } else cb('Unsupported file type', false);
-            } else if (file.fieldname == 'category' || file.fieldname == 'dp' || file.fieldname == 'pdf-thumb') {
+            } else if (file.fieldname == 'category' || file.fieldname == 'dp') {
                 let fext = path.extname(file.originalname);
                 if (fext == '.jpg' || fext == '.jpeg' || fext == '.png') {
                     cb(null, true);

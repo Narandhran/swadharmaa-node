@@ -32,7 +32,7 @@ module.exports = {
             });
     },
     updateThumbnail: async (request, cb) => {
-        let upload = loadMulter(5,'pdf-thumb').single('pdf-thumb');
+        let upload = loadMulter(5,'book').single('pdf-thumb');
         await upload(request, null, (err) => {
             if (err)
                 cb(err, {});

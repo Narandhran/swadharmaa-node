@@ -14,9 +14,6 @@ const fileStorage = multer.diskStorage({
             case 'category':
                 cb(null, `${config.POST_RESOURCE_BASE_PATH}category`);
                 break;
-            case 'pdf-thumb':
-                cb(null, `${config.POST_RESOURCE_BASE_PATH}content/pdf-thumb`);
-                break;
             default:
                 cb(null, `${config.POST_RESOURCE_BASE_PATH}`);
                 break;
@@ -35,7 +32,7 @@ var loadMulter = (fileSize) => {
                 if (file.mimetype === 'application/pdf') {
                     cb(null, true);
                 } else cb('Unsupported file type', false);
-            } else if (file.fieldname == 'category' || file.fieldname == 'dp' || file.fieldname == 'pdf-thumb') {
+            } else if (file.fieldname == 'category' || file.fieldname == 'dp') {
                 let fext = path.extname(file.originalname);
                 if (fext == '.jpg' || fext == '.jpeg' || fext == '.png') {
                     cb(null, true);

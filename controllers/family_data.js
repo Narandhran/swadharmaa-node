@@ -1,4 +1,4 @@
-const { create, updateByUser, getByUser } = require('../services/family_data');
+const { create, createOrupdateByUser, getByUser } = require('../services/family_data');
 const { successHandler, errorHandler } = require('../utils/handler');
 
 module.exports = {
@@ -8,8 +8,8 @@ module.exports = {
             else successHandler(req, res, 'Success', result);
         });
     },
-    updateByUser: (req,res)=>{
-        updateByUser(req, (err, result) => {
+    createOrupdateByUser: (req,res)=>{
+        createOrupdateByUser(req, (err, result) => {
             if (err) errorHandler(req, res, err);
             else successHandler(req, res, 'Data updated successfully', result);
         });

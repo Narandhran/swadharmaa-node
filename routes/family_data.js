@@ -5,7 +5,7 @@ module.exports = app => {
     /**
      * All Users
      */
-    app.post('/family/create', AllUsers, familyCtrl.create);
-    app.put('/family/update_by_user', AllUsers, familyCtrl.updateByUser);
+    // app.post('/family/create', AllUsers, familyCtrl.create);
+    app.put('/family/update_by_user', AllUsers, familyCtrl.createOrupdateByUser);
     app.get('/family/list_by_user', AllUsers, familyCtrl.getByUser);
 };

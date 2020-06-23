@@ -8,7 +8,7 @@ module.exports = {
             cb(err, result);
         });
     },
-    updateByUser: async (request, cb) => {
+    createOrupdateByUser: async (request, cb) => {
         await FamilyData
             .findOneAndUpdate({ 'user_id': request.verifiedToken._id },
                 request.body, { upsert: true, new: true })

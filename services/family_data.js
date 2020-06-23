@@ -19,7 +19,11 @@ module.exports = {
     getByUser: async (request, cb) => {
         await FamilyData.findOne({ 'user_id': request.verifiedToken._id })
             .exec((err, result) => {
-                let finalResult = result ? [shraardhaInfo,personalInfo,familyInfo,familyTree] : [];
+                let finalResult = [];
+                if (result) {
+                    let { shraardhaInfo, personalInfo, familyInfo, familyTree } = result;
+                    finalResult = [shraardhaInfo, personalInfo, familyInfo, familyTree];
+                }
                 cb(err, finalResult);
             });
     }

@@ -13,7 +13,7 @@ module.exports = {
             .findOneAndUpdate({ 'user_id': request.verifiedToken._id },
                 request.body, { upsert: true, new: true })
             .exec((err, result) => {
-                cb(err, res);
+                cb(err, result);
             });
     },
     getByUser: async (request, cb) => {

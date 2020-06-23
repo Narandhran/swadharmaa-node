@@ -24,7 +24,7 @@ module.exports = {
                     let { shraardhaInfo, personalInfo, familyInfo, familyTree } = result;
                     finalResult = [shraardhaInfo, personalInfo, familyInfo, familyTree];
                 }
-                cb(err, finalResult);
+                cb(err, result);
             });
     }
 };

@@ -7,18 +7,20 @@ var familyDataSchema = new Schema({
         required: true
     },
     personalInfo: {
-        type: Schema.Types.Mixed
+        type: Schema.Types.Mixed,
+        default: null
     },
     familyInfo: {
-        type: Schema.Types.Mixed
+        type: Schema.Types.Mixed,
+        default: null
     },
     familyTree: [Schema.Types.Mixed],
     shraardhaInfo: {
-        gothram: { type: Schema.Types.Mixed },
-        name: { type: Schema.Types.Mixed },
-        thithi: [Schema.Types.Mixed],
-        samayal: { type: Schema.Types.Mixed }
-
+        gothram: { type: Schema.Types.Mixed, default: null },
+        name: { type: Schema.Types.Mixed, default: null },
+        thithi: { type: [Schema.Types.Mixed], default: [] },
+        samayal: { type: Schema.Types.Mixed, default: null },
+        shraddha_vazhakkam: { type: Schema.Types.Mixed, default: null }
     }
 }, { timestamps: true });
 

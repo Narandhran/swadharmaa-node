@@ -13,13 +13,14 @@ module.exports = {
             .findOneAndUpdate({ 'user_id': request.verifiedToken._id },
                 request.body, { upsert: true, new: true })
             .exec((err, result) => {
-                cb(err, result);
+                cb(err, res);
             });
     },
     getByUser: async (request, cb) => {
         await FamilyData.findOne({ 'user_id': request.verifiedToken._id })
             .exec((err, result) => {
-                cb(err, result);
+                let { shraardhaInfo = {}, personalInfo = {}, familyInfo = {}, familyTree = [] } = result;
+                cb(err, [shraardhaInfo,personalInfo,familyInfo,familyTree]);
             });
     }
 };

@@ -26,7 +26,7 @@ var loadMulter = (fileSize, filePath) => {
         }),
         fileFilter: function (req, file, cb) {
             if (file.fieldname == 'content') {
-                if (file.mimetype === 'application/pdf') {
+                if (path.extname(file.originalname) === '.pdf') {
                     cb(null, true);
                 } else cb('Unsupported file type', false);
             } else if (file.fieldname == 'category' || file.fieldname == 'dp' || file.fieldname == 'pdf-thumb') {

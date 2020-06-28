@@ -52,7 +52,10 @@ var familyDataSchema = new Schema({
         'padham': { type: String, default: null }
     }],
     shraardhaInfo: {
-        gothram: { type: Schema.Types.Mixed, default: null },
+        gothram: {
+            'mathruGothram': { type: String, default: null },
+            'pithruGothram': { type: String, default: null }
+        },
         name: {
             'mathruPrapithamaha': { type: String, default: null },
             'pithamaha': { type: String, default: null },

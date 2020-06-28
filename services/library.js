@@ -17,6 +17,11 @@ module.exports = {
             }
         });
     },
+    listAll: async (request, cb) => {
+        Library.find({}).exec((err, result) => {
+            cb(err, result);
+        });
+    },
     getById: async (request, cb) => {
         Library
             .findById(request.params.id)
@@ -75,6 +80,7 @@ module.exports = {
                         '_id': '$genre',
                         'items': {
                             '$push': {
+                                '_id': '$_id',
                                 'name': '$name',
                                 'genre': '$genre',
                                 'author': '$author',

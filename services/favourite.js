@@ -15,7 +15,7 @@ module.exports = {
     },
     listByUser: async (request, cb) => {
         Favourite
-            .find({ 'userId': request.verifiedToken._id })
+            .find({ 'userId': request.verifiedToken._id },'_id name genre author yearOfPublish description thumbnail content createdAt updatedAt')
             .populate('libraryId')
             .exec((err, result) => {
                 cb(err, result);

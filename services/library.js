@@ -18,13 +18,14 @@ module.exports = {
         });
     },
     listAll: async (request, cb) => {
-        Library.find({}).exec((err, result) => {
-            cb(err, result);
-        });
+        Library.find({}, '_id name genre author yearOfPublish description thumbnail content createdAt updatedAt')
+            .exec((err, result) => {
+                cb(err, result);
+            });
     },
     getById: async (request, cb) => {
         Library
-            .findById(request.params.id)
+            .findById(request.params.id, '_id name genre author yearOfPublish description thumbnail content createdAt updatedAt')
             .exec((err, result) => {
                 cb(err, result);
             });
@@ -53,7 +54,7 @@ module.exports = {
         });
     },
     getRecent: async (request, cb) => {
-        Library.find({})
+        Library.find({}, '_id name genre author yearOfPublish description thumbnail content createdAt updatedAt')
             .sort({ createdAt: -1 })
             .limit(10)
             .exec((err, result) => {
@@ -62,7 +63,7 @@ module.exports = {
     },
     listByCategory: async (request, cb) => {
         Library
-            .find({ 'categoryId': request.params.id })
+            .find({ 'categoryId': request.params.id }, '_id name genre author yearOfPublish description thumbnail content createdAt updatedAt')
             .sort({ 'updatedAt': -1 })
             .exec((err, result) => {
                 cb(err, result);
@@ -87,7 +88,7 @@ module.exports = {
                                 'yearOfPublish': '$yearOfPublish',
                                 'description': '$description',
                                 'thumbnail': '$thumbnail',
-                                'content': '$content'
+                                'content': '$content',
                             }
                         }
                     }
@@ -118,7 +119,9 @@ module.exports = {
                 'description': '$description',
                 'thumbnail': '$thumbnail',
                 'content': '$content',
-                'keywords': '$keywords'
+                'genre': '$genre',
+                'createdAt': '$createdAt',
+                'updatedAt': '$updatedAt'
             }
         }, {
             '$match': {
@@ -135,13 +138,18 @@ module.exports = {
                 '_id': '$categoryId',
                 'data': {
                     '$push': {
+                        '_id': '$_id',
                         'categoryId': '$categoryId',
                         'name': '$name',
                         'author': '$author',
                         'yearOfPublish': '$yearOfPublish',
                         'description': '$description',
                         'thumbnail': '$thumbnail',
-                        'content': '$content'
+                        'content': '$content',
+                        'genre': '$genre',
+                        'keywords': '$keywords',
+                        'createdAt': '$createdAt',
+                        'updatedAt': '$updatedAt'
                     }
                 }
             }
@@ -159,14 +167,17 @@ module.exports = {
             }
         }, {
             '$project': {
-                '_id': 0,
+                '_id': 1,
                 'categoryId': '$categoryId',
                 'name': '$name',
                 'author': '$author',
                 'yearOfPublish': '$yearOfPublish',
                 'description': '$description',
                 'thumbnail': '$thumbnail',
-                'content': '$content'
+                'content': '$content',
+                'genre': '$genre',
+                'createdAt': '$createdAt',
+                'updatedAt': '$updatedAt'
             }
         }]).exec((err, result) => {
             cb(err, result);

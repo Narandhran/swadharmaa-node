@@ -12,7 +12,7 @@ module.exports = {
     listAll: (req,res)=>{
         listAll(req, (err, result) => {
             if (err) errorHandler(req, res, err);
-            else successHandler(req, res, 'Search any book', {});
+            else successHandler(req, res, 'Search any book', result);
         });
     },
     getRecent: (req, res) => {

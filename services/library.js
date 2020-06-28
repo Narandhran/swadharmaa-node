@@ -110,7 +110,7 @@ module.exports = {
             }
         }, {
             '$project': {
-                'categoryId': '$categoryId',
+                // 'categoryId': '$categoryId',
                 'name': {
                     '$toLower': '$name'
                 },

@@ -110,10 +110,11 @@ module.exports = {
             }
         }, {
             '$project': {
-                // 'categoryId': '$categoryId',
+                'categoryId': '$categoryId',
                 'name': {
                     '$toLower': '$name'
                 },
+                '_id': '$_id',
                 'author': '$author',
                 'yearOfPublish': '$yearOfPublish',
                 'description': '$description',
@@ -168,7 +169,6 @@ module.exports = {
         }, {
             '$project': {
                 '_id': 1,
-                'categoryId': '$categoryId',
                 'name': '$name',
                 'author': '$author',
                 'yearOfPublish': '$yearOfPublish',

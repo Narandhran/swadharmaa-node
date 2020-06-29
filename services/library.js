@@ -1,4 +1,5 @@
 const { Library } = require('../models/library');
+const { Favourite } = require('../models/favourite');
 const { loadMulter } = require('../services/custom/multers3.service');
 
 module.exports = {
@@ -18,15 +19,23 @@ module.exports = {
         });
     },
     listAll: async (request, cb) => {
-        Library.find({}, '_id name genre author yearOfPublish description thumbnail content createdAt updatedAt')
+        await Library.find({}, '_id name genre author yearOfPublish description thumbnail content createdAt updatedAt')
             .exec((err, result) => {
                 cb(err, result);
             });
     },
     getById: async (request, cb) => {
-        Library
-            .findById(request.params.id, '_id name genre author yearOfPublish description thumbnail content createdAt updatedAt')
+        let { userId, libraryId } = request.body;
+        let isFav = false;
+        if (userId)
+            isFav = await Favourite.findOne({ 'userId': userId, 'libraryId': libraryId });
+        await Library
+            .findById(libraryId, '_id name genre author yearOfPublish description thumbnail content createdAt updatedAt')
+            .lean()
             .exec((err, result) => {
+                if (isFav) result.isBookmark = true;
+                else result.isBookmark = false;
+                console.log(JSON.stringify(result));
                 cb(err, result);
             });
     },
@@ -54,7 +63,7 @@ module.exports = {
         });
     },
     getRecent: async (request, cb) => {
-        Library.find({}, '_id name genre author yearOfPublish description thumbnail content createdAt updatedAt')
+        await Library.find({}, '_id name genre author yearOfPublish description thumbnail content createdAt updatedAt')
             .sort({ createdAt: -1 })
             .limit(10)
             .exec((err, result) => {
@@ -62,7 +71,7 @@ module.exports = {
             });
     },
     listByCategory: async (request, cb) => {
-        Library
+        await Library
             .find({ 'categoryId': request.params.id }, '_id name genre author yearOfPublish description thumbnail content createdAt updatedAt')
             .sort({ 'updatedAt': -1 })
             .exec((err, result) => {
@@ -70,7 +79,7 @@ module.exports = {
             });
     },
     genreBasedList: async (request, cb) => {
-        Library
+        await Library
             .aggregate([
                 {
                     '$unwind': { 'path': '$genre' }
@@ -104,7 +113,7 @@ module.exports = {
             });
     },
     searchFilter: async (request, cb) => {
-        Library.aggregate([{
+        await Library.aggregate([{
             '$unwind': {
                 'path': '$keywords'
             }

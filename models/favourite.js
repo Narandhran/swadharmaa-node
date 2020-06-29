@@ -11,6 +11,10 @@ var favouriteSchema = new Schema({
         ref: 'library',
         required: true
     },
+    isBookmark : {
+        type: Boolean,
+        default: false
+    },
     hint: {
         type: String,
         required: false,

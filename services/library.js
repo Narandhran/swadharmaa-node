@@ -148,7 +148,7 @@ module.exports = {
                 '_id': '$categoryId',
                 'data': {
                     '$push': {
-                        '_id': '$_id',
+                        'id': '$_id',
                         'categoryId': '$categoryId',
                         'name': '$name',
                         'author': '$author',
@@ -177,7 +177,7 @@ module.exports = {
             }
         }, {
             '$project': {
-                '_id': 1,
+                '_id': '$id',
                 'name': '$name',
                 'author': '$author',
                 'yearOfPublish': '$yearOfPublish',

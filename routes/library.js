@@ -13,7 +13,7 @@ module.exports = app => {
     /**
      * All Users
      */
-    app.get('/library/get_one', libraryCtl.getById);
+    app.post('/library/get_one', libraryCtl.getById);
     app.get('/library/list_recent', libraryCtl.getRecent);
     app.get('/library/list_category/:id', libraryCtl.listByCategory);
     app.get('/library/homepage', libraryCtl.genreBasedList);

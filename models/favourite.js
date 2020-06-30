@@ -13,7 +13,7 @@ var favouriteSchema = new Schema({
     },
     isBookmark : {
         type: Boolean,
-        default: false
+        default: true
     },
     hint: {
         type: String,

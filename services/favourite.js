@@ -8,7 +8,7 @@ module.exports = {
             });
     },
     removeFromFavourite: async (request, cb) => {
-       await Favourite.findByIdAndDelete(request.params.id)
+       await Favourite.findOneAndRemove({'userId': request.verifiedToken._id,'libraryId':request.params.id})
             .exec((err, result) => {
                 cb(err, result);
             });

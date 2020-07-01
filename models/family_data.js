@@ -37,7 +37,7 @@ var familyDataSchema = new Schema({
         'pravara': { type: String, default: null },
         'motherTongue': { type: String, default: null },
         'sampradhayam': { type: String, default: null },
-        'poojas': { type: String, default: null },
+        'poojas': { type: [String], default: [] },
         'vedham': { type: String, default: null },
         'gothram': { type: String, default: null }
     },

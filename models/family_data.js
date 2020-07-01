@@ -81,18 +81,18 @@ var familyDataSchema = new Schema({
             'masamSauramanam': { type: String, default: null }
         }],
         samayal: {
-            'pazhanga': { type: String, default: null },
+            'pazhanga': { type: [String], default: [] },
             'thyirPachchadi': { type: String, default: null },
-            'thugayal': { type: String, default: null },
+            'thugayal': { type: [String], default: [] },
             'poruchchakuttu': { type: String, default: null },
             'rasam': { type: String, default: null },
             'sweetPachchadi': { type: String, default: null },
-            'kari': { type: String, default: null },
-            'bhakshanam': { type: String, default: null },
+            'kari': { type: [String], default: [] },
+            'bhakshanam': { type: [String], default: [] },
             'samayalType': { type: String, default: null },
             'puliKuttu': { type: String, default: null },
             'other': { type: String, default: null },
-            'uruga': { type: String, default: null },
+            'uruga': { type: [String], default: [] },
             'payasam': { type: String, default: null },
             'morkuzhambu': { type: String, default: null }
         },

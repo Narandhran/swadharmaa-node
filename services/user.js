@@ -82,5 +82,12 @@ module.exports = {
             .exec((err, result) => {
                 cb(err, result);
             });
+    },
+    list: async (request, cb) => {
+        await User
+            .find({},'_id fname lname dp email gender mobile')
+            .exec((err, result) => {
+                cb(err, result);
+            });
     }
 };

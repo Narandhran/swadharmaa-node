@@ -1,5 +1,6 @@
 const libraryCtl = require('../controllers/library');
 const { AdminOnly, AllUsers } = require('../utils/auth.util');
+const { listByGener } = require('../services/library');
 
 module.exports = app => {
 
@@ -19,4 +20,5 @@ module.exports = app => {
     app.get('/library/homepage', libraryCtl.genreBasedList);
     app.get('/library/search/:search', libraryCtl.searchFilter);
     app.get('/library/list', libraryCtl.listAll);
+    app.get('/library/list_genre/:genre',libraryCtl.listByGener);
 };

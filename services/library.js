@@ -78,6 +78,14 @@ module.exports = {
                 cb(err, result);
             });
     },
+    listByGener: async (request, cb) => {
+        await Library
+            .find({ 'genre': request.params.genre },'_id name genre author yearOfPublish description thumbnail content createdAt updatedAt')
+            .sort({ 'updatedAt': -1 })
+            .exec((err, result) => {
+                cb(err, result);
+            });
+    },
     genreBasedList: async (request, cb) => {
         await Library
             .aggregate([
@@ -125,6 +133,7 @@ module.exports = {
                 },
                 '_id': '$_id',
                 'author': '$author',
+                'keywords': '$keywords',
                 'yearOfPublish': '$yearOfPublish',
                 'description': '$description',
                 'thumbnail': '$thumbnail',

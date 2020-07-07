@@ -19,7 +19,7 @@ module.exports = {
         });
     },
     listAll: async (request, cb) => {
-        await Library.find({}, '_id name genre author yearOfPublish description thumbnail content createdAt updatedAt')
+        await Library.find({})
             .exec((err, result) => {
                 cb(err, result);
             });
@@ -30,7 +30,7 @@ module.exports = {
         if (userId)
             isFav = await Favourite.findOne({ 'userId': userId, 'libraryId': libraryId });
         await Library
-            .findById(libraryId, '_id name genre author yearOfPublish description thumbnail content createdAt updatedAt')
+            .findById(libraryId)
             .lean()
             .exec((err, result) => {
                 if (isFav) result.isBookmark = true;
@@ -62,8 +62,24 @@ module.exports = {
             }
         });
     },
+    updateBook: async (request, cb) => {
+        let upload = loadMulter(5, 'book').single('content');
+        await upload(request, null, (err) => {
+            if (err)
+                cb(err, {});
+            else {
+                Library
+                    .findByIdAndUpdate(request.params.id, {
+                        content: request.file.key
+                    }, { new: true })
+                    .exec((err, result) => {
+                        cb(err, result);
+                    });
+            }
+        });
+    },
     getRecent: async (request, cb) => {
-        await Library.find({}, '_id name genre author yearOfPublish description thumbnail content createdAt updatedAt')
+        await Library.find({})
             .sort({ createdAt: -1 })
             .limit(10)
             .exec((err, result) => {
@@ -72,7 +88,7 @@ module.exports = {
     },
     listByCategory: async (request, cb) => {
         await Library
-            .find({ 'categoryId': request.params.id }, '_id name genre author yearOfPublish description thumbnail content createdAt updatedAt')
+            .find({ 'categoryId': request.params.id })
             .sort({ 'updatedAt': -1 })
             .exec((err, result) => {
                 cb(err, result);
@@ -80,7 +96,7 @@ module.exports = {
     },
     listByGener: async (request, cb) => {
         await Library
-            .find({ 'genre': request.params.genre },'_id name genre author yearOfPublish description thumbnail content createdAt updatedAt')
+            .find({ 'genre': request.params.genre })
             .sort({ 'updatedAt': -1 })
             .exec((err, result) => {
                 cb(err, result);

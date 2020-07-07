@@ -13,6 +13,17 @@ module.exports = {
                 cb(err, result);
             });
     },
+    getByUserId: async (request, cb) => {
+        await FamilyData.findOne({ 'user_id': request.params.id })
+            .exec((err, result) => {
+                let finalResult = [];
+                if (result) {
+                    let { shraardhaInfo, personalInfo, familyInfo, familyTree } = result;
+                    finalResult = [shraardhaInfo, personalInfo, familyInfo, familyTree];
+                }
+                cb(err, result);
+            });
+    },
     createOrUpdatePersonalInfo: async (request, cb) => {
         request.body.user_id = request.verifiedToken._id;
         await FamilyData

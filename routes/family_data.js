@@ -6,6 +6,7 @@ module.exports = app => {
      * All Users
      */
     app.get('/family/list_by_user', AllUsers, familyCtrl.getByUser);
+    app.get('/family/list_id/:id',AdminOnly,familyCtrl.getByUserId);
     app.post('/family/create_update_personal_info', AllUsers, familyCtrl.createOrUpdatePersonalInfo);
     app.post('/family/create_update_family_info', AllUsers, familyCtrl.createOrupdateFamilyInfo);
     app.post('/family/create_family_tree', AllUsers, familyCtrl.createFamilyTree);

@@ -1,5 +1,5 @@
 const { create, getRecent, updateById, updateThumbnail, getById, listByCategory, genreBasedList,
-    searchFilter, listAll, listByGener } = require('../services/library');
+    searchFilter, listAll, listByGener,updateBook } = require('../services/library');
 const { successHandler, errorHandler } = require('../utils/handler');
 
 module.exports = {
@@ -29,6 +29,12 @@ module.exports = {
     },
     updateThumbnail: (req, res) => {
         updateThumbnail(req, (err, result) => {
+            if (err) errorHandler(req, res, err);
+            else successHandler(req, res, 'Updated successfully', result);
+        });
+    },
+    updateBook: (req, res) => {
+        updateBook(req, (err, result) => {
             if (err) errorHandler(req, res, err);
             else successHandler(req, res, 'Updated successfully', result);
         });

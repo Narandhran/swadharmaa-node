@@ -1,11 +1,17 @@
 const { getByUser, createFamilyTree, createOrupdateFamilyInfo, createOrUpdateVazhakam, createOrUpdateGothram,
     createOrUpdateName, createOrUpdatePersonalInfo, createOrUpdateSamayal, createThithi, updateThithi,
-    updateFamilyTree } = require('../services/family_data');
+    updateFamilyTree, getByUserId } = require('../services/family_data');
 const { successHandler, errorHandler } = require('../utils/handler');
 
 module.exports = {
     getByUser: (req, res) => {
         getByUser(req, (err, result) => {
+            if (err) errorHandler(req, res, err);
+            else successHandler(req, res, 'Success', result);
+        });
+    },
+    getByUserId: (req, res) => {
+        getByUserId(req, (err, result) => {
             if (err) errorHandler(req, res, err);
             else successHandler(req, res, 'Success', result);
         });

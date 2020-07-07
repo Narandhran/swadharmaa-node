@@ -1,7 +1,13 @@
 const userCtl = require('../controllers/user');
 const { AdminOnly, AllUsers } = require('../utils/auth.util');
+const user = require('../models/user');
 
 module.exports = app => {
+    /**
+     * Admin only
+     */
+    app.get('/user/list', AdminOnly, userCtl.list);
+
     /**
      * All users
      */

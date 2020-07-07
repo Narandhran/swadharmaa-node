@@ -34,7 +34,7 @@ var librarySchema = new Schema({
     description: {
         type: String,
         required: false,
-        maxlength: 100
+        maxlength: 300
     },
     keywords: {
         type: [String],

@@ -20,6 +20,7 @@ module.exports = {
     },
     listAll: async (request, cb) => {
         await Library.find({})
+            .populate('categoryId')
             .exec((err, result) => {
                 cb(err, result);
             });
@@ -81,6 +82,7 @@ module.exports = {
     },
     getRecent: async (request, cb) => {
         await Library.find({})
+            .populate('categoryId')
             .sort({ createdAt: -1 })
             .limit(10)
             .exec((err, result) => {
@@ -90,6 +92,7 @@ module.exports = {
     listByCategory: async (request, cb) => {
         await Library
             .find({ 'categoryId': request.params.id })
+            .populate('categoryId')
             .sort({ 'updatedAt': -1 })
             .exec((err, result) => {
                 cb(err, result);
@@ -98,6 +101,7 @@ module.exports = {
     listByGener: async (request, cb) => {
         await Library
             .find({ 'genre': request.params.genre })
+            .populate('categoryId')
             .sort({ 'updatedAt': -1 })
             .exec((err, result) => {
                 cb(err, result);

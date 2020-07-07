@@ -3,17 +3,6 @@ const { request } = require('express');
 
 module.exports = {
     getByUser: async (request, cb) => {
-        await FamilyData.findOne({ 'user_id': request.verifiedToken._id })
-            .exec((err, result) => {
-                let finalResult = [];
-                if (result) {
-                    let { shraardhaInfo, personalInfo, familyInfo, familyTree } = result;
-                    finalResult = [shraardhaInfo, personalInfo, familyInfo, familyTree];
-                }
-                cb(err, result);
-            });
-    },
-    getByUserId: async (request, cb) => {
         await FamilyData.findOne({ 'user_id': request.params.id })
             .exec((err, result) => {
                 let finalResult = [];
@@ -25,9 +14,9 @@ module.exports = {
             });
     },
     createOrUpdatePersonalInfo: async (request, cb) => {
-        request.body.user_id = request.verifiedToken._id;
+        request.body.user_id = request.params.id;
         await FamilyData
-            .findOneAndUpdate({ 'user_id': request.verifiedToken._id },
+            .findOneAndUpdate({ 'user_id': request.params.id },
                 { 'personalInfo': request.body },
                 { upsert: true, new: true })
             .exec((err, result) => {
@@ -36,16 +25,16 @@ module.exports = {
 
     },
     createOrupdateFamilyInfo: async (request, cb) => {
-        request.body.user_id = request.verifiedToken._id;
+        request.body.user_id = request.params.id;
         await FamilyData
-            .findOneAndUpdate({ 'user_id': request.verifiedToken._id },
+            .findOneAndUpdate({ 'user_id': request.params.id },
                 { 'familyInfo': request.body }, { upsert: true, new: true })
             .exec((err, result) => {
                 cb(err, result);
             });
     },
     createFamilyTree: async (request, cb) => {
-        FamilyData.findOneAndUpdate({ 'user_id': request.verifiedToken._id },
+        FamilyData.findOneAndUpdate({ 'user_id': request.params.id },
             {
                 $push:
                     { 'familyTree': request.body }
@@ -56,7 +45,7 @@ module.exports = {
     },
     updateFamilyTree: async (request, cb) => {
         FamilyData.findOneAndUpdate(
-            { 'user_id': request.verifiedToken._id, 'familyTree._id': request.params.id },
+            { 'user_id': request.query.userId, 'familyTree._id': request.query.treeId },
             {
                 '$set': { 'familyTree.$': request.body }
             }, { new: true }).exec((err, result) => {
@@ -64,7 +53,7 @@ module.exports = {
             });
     },
     createOrUpdateGothram: async (request, cb) => {
-        FamilyData.findOneAndUpdate({ 'user_id': request.verifiedToken._id },
+        FamilyData.findOneAndUpdate({ 'user_id': request.params.id },
             {
                 '$set': { 'shraardhaInfo.gothram': request.body }
             },
@@ -73,7 +62,7 @@ module.exports = {
             });
     },
     createOrUpdateName: async (request, cb) => {
-        FamilyData.findOneAndUpdate({ 'user_id': request.verifiedToken._id },
+        FamilyData.findOneAndUpdate({ 'user_id': request.params.id },
             {
                 '$set': { 'shraardhaInfo.name': request.body }
             },
@@ -82,7 +71,7 @@ module.exports = {
             });
     },
     createThithi: async (request, cb) => {
-        FamilyData.findOneAndUpdate({ 'user_id': request.verifiedToken._id },
+        FamilyData.findOneAndUpdate({ 'user_id': request.params.id },
             {
                 $push:
                     { 'shraardhaInfo.thithi': request.body }
@@ -93,7 +82,7 @@ module.exports = {
     },
     updateThithi: async (request, cb) => {
         FamilyData.findOneAndUpdate(
-            { 'user_id': request.verifiedToken._id, 'shraardhaInfo.thithi._id': request.params.id },
+            { 'user_id': request.query.userId, 'shraardhaInfo.thithi._id': request.query.thithiId },
             {
                 '$set': { 'shraardhaInfo.thithi.$': request.body }
             }, { new: true }).exec((err, result) => {
@@ -101,7 +90,7 @@ module.exports = {
             });
     },
     createOrUpdateSamayal: async (request, cb) => {
-        FamilyData.findOneAndUpdate({ 'user_id': request.verifiedToken._id },
+        FamilyData.findOneAndUpdate({ 'user_id': request.params.id },
             {
                 '$set': { 'shraardhaInfo.samayal': request.body }
             },
@@ -110,7 +99,7 @@ module.exports = {
             });
     },
     createOrUpdateVazhakam: async (request, cb) => {
-        FamilyData.findOneAndUpdate({ 'user_id': request.verifiedToken._id },
+        FamilyData.findOneAndUpdate({ 'user_id': request.params.id },
             {
                 '$set': { 'shraardhaInfo.shraddha_vazhakkam': request.body }
             },

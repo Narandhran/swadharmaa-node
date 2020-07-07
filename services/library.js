@@ -31,6 +31,7 @@ module.exports = {
             isFav = await Favourite.findOne({ 'userId': userId, 'libraryId': libraryId });
         await Library
             .findById(libraryId)
+            .populate('categoryId')
             .lean()
             .exec((err, result) => {
                 if (isFav) result.isBookmark = true;

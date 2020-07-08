@@ -14,6 +14,6 @@ module.exports = app => {
     app.post('/family/create_update_name/:id', AllUsers, familyCtrl.createOrUpdateName);
     app.post('/family/create_update_vazhkam/:id', AllUsers, familyCtrl.createOrUpdateVazhakam);
     app.post('/family/create_update_samayal/:id', AllUsers, familyCtrl.createOrUpdateSamayal);
-    app.post('/family/create_thithi', AllUsers, familyCtrl.createThithi);
+    app.post('/family/create_thithi/:id', AllUsers, familyCtrl.createThithi);
     app.post('/family/update_thithi', AllUsers, familyCtrl.updateThithi);
 };

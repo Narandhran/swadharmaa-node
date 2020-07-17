@@ -154,7 +154,9 @@ module.exports = {
                 },
                 '_id': '$_id',
                 'author': '$author',
-                'keywords': '$keywords',
+                'keywords': {
+                    '$toLower': '$keywords'
+                },
                 'yearOfPublish': '$yearOfPublish',
                 'description': '$description',
                 'thumbnail': '$thumbnail',
@@ -167,15 +169,21 @@ module.exports = {
             '$match': {
                 '$or': [
                     {
-                        'name': new RegExp(request.params.search + '.*')
+                        'name': {
+                            '$regex': new RegExp(request.params.search),
+                            '$options': 'i'
+                        }
                     }, {
-                        'keywords': new RegExp(request.params.search + '.*')
+                        'keywords': {
+                            '$regex': new RegExp(request.params.search),
+                            '$options': 'i'
+                        }
                     }
                 ]
             }
         }, {
             '$group': {
-                '_id': '$categoryId',
+                '_id': '$_id',
                 'data': {
                     '$push': {
                         'id': '$_id',

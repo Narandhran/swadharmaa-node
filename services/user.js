@@ -45,11 +45,12 @@ module.exports = {
             isUser.verify.otp = otp;
             isUser.verify.expire = new Date();
             await isUser.save();
-            axios.defaults.timeout = 5000;
-            await axios.get(smsGateWay.uri(mobile, `Hi ${isUser.fullname}, your OTP is ${otp} will expire in another 15 mins. Kindly use this for login, don't share it with anyone. Have a great day, Team SWADHARMAA.`))
-                .then(r => {
-                    cb(null, 'OTP sent successfully');
-                }).catch(e => { cb(e, {}); });
+            async function makeGetRequest() {
+                let res = await axios.get(smsGateWay.uri(mobile, `Hi ${isUser.fullname}, your OTP is ${otp} will expire in another 15 mins. Kindly use this for login, don't share it with anyone. Have a great day, Team SWADHARMAA.`));
+                let data = res.data;
+            }
+            await makeGetRequest();
+            cb(null, 'OTP sent successfully');
         } else cb(new Error('User not exist, please register!'), {});
     },
     updateDp: async (request, cb) => {
@@ -58,7 +59,6 @@ module.exports = {
             if (err)
                 cb(err);
             else {
-                console.log(request.file);
                 User
                     .findByIdAndUpdate(request.verifiedToken._id, {
                         dp: request.file.key

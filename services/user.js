@@ -45,14 +45,15 @@ module.exports = {
             isUser.verify.otp = otp;
             isUser.verify.expire = new Date();
             await isUser.save();
-            // console.log(smsGateWay.uri(mobile, `Hi ${isUser.fullname}, your OTP is ${otp} will expire in another 15 mins. Kindly use this for login, don't share it with anyone. Have a great day, Team SWADHARMAA.`));
-            await axios.get(smsGateWay.uri(mobile, `Hi ${isUser.fullname}, your OTP is ${otp} will expire in another 15 mins. Kindly use this for login, don't share it with anyone. Have a great day, Team SWADHARMAA.`)).then(r => {
-                cb(null, 'OTP sent successfully');
-            }).catch(e => { cb(e, {}); });
-        } else cb(new Error('User doesn\'t exist, please register!'), {});
+            axios.defaults.timeout = 5000;
+            await axios.get(smsGateWay.uri(mobile, `Hi ${isUser.fullname}, your OTP is ${otp} will expire in another 15 mins. Kindly use this for login, don't share it with anyone. Have a great day, Team SWADHARMAA.`))
+                .then(r => {
+                    cb(null, 'OTP sent successfully');
+                }).catch(e => { cb(e, {}); });
+        } else cb(new Error('User not exist, please register!'), {});
     },
     updateDp: async (request, cb) => {
-        let upload = loadMulter(5,'dp').single('dp');
+        let upload = loadMulter(5, 'dp').single('dp');
         await upload(request, null, (err) => {
             if (err)
                 cb(err);
@@ -85,7 +86,7 @@ module.exports = {
     },
     list: async (request, cb) => {
         await User
-            .find({},'_id fname lname dp email gender mobile')
+            .find({}, '_id fname lname dp email gender mobile')
             .exec((err, result) => {
                 cb(err, result);
             });

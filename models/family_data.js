@@ -101,7 +101,8 @@ var familyDataSchema = new Schema({
             'tharpanaKoorcham': { type: String, default: null },
             'pundraDharanam': { type: String, default: null },
             'koorcham': { type: String, default: null },
-            'krusaram': { type: String, default: null }
+            'krusaram': { type: String, default: null },
+            'other': { type: String, default: null }
         }
     }
 }, { timestamps: false });

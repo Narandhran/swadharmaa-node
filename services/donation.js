@@ -3,6 +3,7 @@ const { User } = require('../models/user');
 const { createPayment, verify } = require('./custom/razorpay.service');
 const { alphaNumeric, autoIdGen, onlyNumber } = require('../utils/autogen');
 const { uri } = require('../utils/constant').smsGateWay;
+const axios = require('axios').default;
 const { json } = require('body-parser');
 
 module.exports = {

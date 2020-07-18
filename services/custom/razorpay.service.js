@@ -7,7 +7,7 @@ var instance = new Razorpay({
 });
 
 
-module.exports.createOrder = async (options, cb) => {
+module.exports.createPayment = async (options, cb) => {
     let { amount, currency = 'INR', receipt, payment_capture = 1, notes } = options;
     await instance.orders.create({
         amount: amount,

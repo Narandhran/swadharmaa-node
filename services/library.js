@@ -4,7 +4,7 @@ const { loadMulter } = require('../services/custom/multers3.service');
 
 module.exports = {
     create: async (request, cb) => {
-        let upload = loadMulter(20, 'book').any();
+        let upload = loadMulter(250, 'book').any();
         await upload(request, null, async (err) => {
             if (err)
                 cb(err, {});
@@ -37,7 +37,7 @@ module.exports = {
             .exec((err, result) => {
                 if (isFav) result.isBookmark = true;
                 else result.isBookmark = false;
-                console.log(JSON.stringify(result));
+                // console.log(JSON.stringify(result));
                 cb(err, result);
             });
     },
@@ -65,7 +65,7 @@ module.exports = {
         });
     },
     updateBook: async (request, cb) => {
-        let upload = loadMulter(5, 'book').single('content');
+        let upload = loadMulter(250, 'book').single('content');
         await upload(request, null, (err) => {
             if (err)
                 cb(err, {});

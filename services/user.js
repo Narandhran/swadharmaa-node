@@ -46,7 +46,7 @@ module.exports = {
             isUser.verify.expire = new Date();
             await isUser.save();
             async function makeGetRequest() {
-                let res = await axios.get(smsGateWay.uri(mobile, `Hi ${isUser.fullname}, your OTP is ${otp} will expire in another 15 mins. Kindly use this for login, don't share it with anyone. Have a great day, Team SWADHARMAA.`));
+                let res = await axios.get(smsGateWay.uri(mobile, `Hi ${isUser.fullname}, your OTP is ${otp} will expire in another 15 mins. Kindly use this for login, don't share it with anyone. Have a great day, Team SWADHARMAA.`,smsGateWay.template_id.otp));
                 let data = res.data;
             }
             await makeGetRequest();
